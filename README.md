@@ -18,10 +18,10 @@
     <img alt="Project Status:" src="https://img.shields.io/badge/available-%E2%88%9A-green" target="_blank" />
   </a>
 </p>
-<p align="center"><h3><a>[English](https://stackedit.io/README-eng.md/)</a></h3></p>
+<p align="center"><h3><a href="https://github.com/kunlan1949/CQB.NET/blob/master/README.md"><font size=4>English</font></a></h3></p>
 
 ----
-### **[English](README-eng.md/)**  
+
 ## CQB.NET  
 <p align="center"><a><span>CQB.NET是一个编写于.NET5的QBot。通过提供其所包含的丰富功能来增强Q群聊天的娱乐性<span/><a></p>
 
