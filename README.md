@@ -18,7 +18,7 @@
     <img alt="Project Status:" src="https://img.shields.io/badge/available-%E2%88%9A-green" target="_blank" />
   </a>
 </p>
-<p align="center"><h3><a href="https://github.com/kunlan1949/CQB.NET/blob/master/README.md"><font size=4>English</font></a></h3></p>
+<p align="center"><h3><a href="https://github.com/kunlan1949/CQB.NET/blob/master/README-eng.md"><font size=4>English</font></a></h3></p>
 
 ----
 
