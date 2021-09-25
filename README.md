@@ -54,6 +54,15 @@ CQB.NET （以下简称CQB）为开源作品，由于项目特殊性，各项功
   >不可用：❌
   >开发中：🚧
   >计划中：🚩
+
+<details>
+  <summary>通用指令</summary>
+  
+| 功能 | 数据源  | 可用性 |
+| --- | --- |  ---|
+|  帮助菜单 | 🈳 | ✔️ |
+</details>
+
 <details>
   <summary>查询相关</summary>
   
@@ -77,6 +86,8 @@ CQB.NET （以下简称CQB）为开源作品，由于项目特殊性，各项功
 |  | [第一星座网](https://www.d1xz.net/) | ✔️ | 
 | 游戏查询 | [Steam Store](https://store.steampowered.com/)) | ✔️ | 
 | 圣遗物截图评分 | 插件 | ✔️ | 
+
+
 
 </details>
 
