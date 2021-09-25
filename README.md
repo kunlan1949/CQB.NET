@@ -1,4 +1,8 @@
 <h1 align="center">Welcome to CQB.NET  👋</h1>
+
+
+<p align="center"><a><span>CQB.NET是一个编写于.NET5的QBot。通过提供其所包含的丰富功能来增强Q群聊天的娱乐性<span/><a></p>
+
 <p align="center">
   <a>
    <img alt="License:" src="https://img.shields.io/badge/downloadable-%C3%97-critical" target="_blank" />
@@ -6,8 +10,6 @@
   <a href="https://github.com/kunlan1949/CQB.NET/blob/master/MIT-license.md">
     <img alt="License:" src="https://img.shields.io/badge/license-MIT-yellow.svg" target="_blank" />
   </a>
-  </p>
-  <p align="center">
   <a href="https://docs.microsoft.com/en-us/dotnet/csharp/">
     <img alt="Language:" src="https://img.shields.io/badge/language-C%23-orange" target="_blank" />
   </a>  
@@ -18,12 +20,9 @@
     <img alt="Project Status:" src="https://img.shields.io/badge/available-%E2%88%9A-green" target="_blank" />
   </a>
 </p>
-<p align="center"><h3><a href="https://github.com/kunlan1949/CQB.NET/blob/master/README-eng.md"><font size=4>English</font></a></h3></p>
+<p align="center"><a href="https://github.com/kunlan1949/CQB.NET/blob/master/README-eng.md"><font size=5>English</font></a></p>
 
 ----
-
-## CQB.NET  
-<p align="center"><a><span>CQB.NET是一个编写于.NET5的QBot。通过提供其所包含的丰富功能来增强Q群聊天的娱乐性<span/><a></p>
 
 
 ## 声明
