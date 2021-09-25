@@ -1,5 +1,5 @@
 <h1 align="center">Welcome to CQB.NET   👋</h1>
-<p align = "center" > < a > < span > cqb.net is a qbot written in. Net5. Enhance the entertainment of q-group chat by providing its rich functions <span/> <a></p>
+<p align = "center" > <a> <span> cqb.net is a qbot written in. Net5. Enhance the entertainment of q-group chat by providing its rich functions <span/> <a></p>
 <p align="center">
 <a href=" https://github.com/kunlan1949/CQB.NET/blob/master/MIT-license.md ">
 <img alt="License:" src=" https://img.shields.io/badge/license-MIT-yellow.svg " target="_blank" />
