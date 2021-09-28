@@ -1,4 +1,5 @@
-﻿using Mirai.Net.Data.Messages;
+﻿using Db.Bot;
+using Mirai.Net.Data.Messages;
 using Mirai.Net.Data.Messages.Receivers;
 using Mirai.Net.Modules;
 using SharedLibrary.Action.GroupMessage;
@@ -14,11 +15,28 @@ namespace SharedLibrary.Listener
         {
             if (@base is GroupMessageReceiver receiver)
             {
-
-                var p = GroupMessageAction.GroupCommandParse(receiver);
-                if (!p)
+                var m = Members.Find(Members._.MemGroup == receiver.Sender.Group.Id & Members._.MemQq==receiver.Sender.Id);
+                var g = Groups.Find(Groups._.GrpId == receiver.Sender.Group.Id);
+                if (g!= null)
                 {
-                    //不符合指令
+                    if(m != null)
+                    {
+                        var p = GroupMessageAction.GroupCommandParse(m, g, receiver);
+                        if (!p)
+                        {
+                            //不符合指令
+                        }
+                    }
+                    else
+                    {
+                        //不存在成员记录(此处需要成员注册)
+                    }
+
+                }
+                else
+                {
+                    //不存在群或成员记录(此处需要群注册)
+
                 }
             }
         }

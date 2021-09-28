@@ -1,6 +1,9 @@
-﻿using Mirai.Net.Data.Messages.Concretes;
+﻿using Db.Bot;
+using Mirai.Net.Data.Messages.Concretes;
 using Mirai.Net.Data.Messages.Receivers;
 using Mirai.Net.Utils.Scaffolds;
+using SharedLibrary.Action.GroupMessage.Func;
+using SharedLibrary.Action.GroupMessage.Game;
 using SharedLibrary.Dictionary;
 using SharedLibrary.Helper;
 using System;
@@ -13,7 +16,7 @@ namespace SharedLibrary.Action.GroupMessage
 {
     public class GroupMessageAction
     {
-        public static bool GroupCommandParse(GroupMessageReceiver receiver)
+        public static bool GroupCommandParse(Members mem, Groups group, GroupMessageReceiver receiver)
         {
             TimeCounterHelper tcc = new TimeCounterHelper();
             tcc.Start();
@@ -34,11 +37,11 @@ namespace SharedLibrary.Action.GroupMessage
                 Console.Write($"[{tcc.Span().TotalMilliseconds.ToString("0.00")}ms][{message.Type}]: ");
                 Console.WriteLine($"{message.Text}");
                 Console.ResetColor();
-                plainMsgParse(message);
+                plainMsgParse(mem, group, message, receiver);
                 isParseTrue = true;
             }
 
-            if (imageMsg != null && plainMsg.Length<=0)
+            if (imageMsg != null && plainMsg.Length <= 0)
             {
                 foreach (var image in imageMsg)
                 {
@@ -58,21 +61,40 @@ namespace SharedLibrary.Action.GroupMessage
             return isParseTrue;
         }
 
-        private static void plainMsgParse(PlainMessage message)
+        private static void plainMsgParse(Members mem, Groups group, PlainMessage message, GroupMessageReceiver receiver)
         {
-            commandSplit(message.Text);
-            Console.WriteLine(GroupMsg.DGroupMsg["猜数字"]);
+            var command = commandSplit(message.Text);
+            if (GroupMsg.DGroupMsg.ContainsKey(command[0]))
+            {
+                if (GroupMsg.DGroupMsg[command[0]] == GroupMsg.MsgType.Game)
+                {
+                    GameAction.CommandParse(mem, group, command, receiver);
+                }
+                else if (GroupMsg.DGroupMsg[command[0]] == GroupMsg.MsgType.Func)
+                {
+                    FuncAction.CommandParse(mem, group, command, receiver);
+                }
+            }
+            else
+            {
+                //关键词不存在或输入错误
+
+            }
+
         }
 
         private static List<string> commandSplit(string command)
         {
-            List<string> cList= new();
+            List<string> cList = new();
             var list = command.Split(" ").ToList();
-            if(list.Count>0 && list != null)
+            if (list.Count > 0 && list != null)
             {
                 if (list.Count >= 1)
                 {
-
+                    foreach (var l in list)
+                    {
+                        cList.Add(l);
+                    }
                 }
                 else
                 {
@@ -83,7 +105,6 @@ namespace SharedLibrary.Action.GroupMessage
             {
                 return null;
             }
-           
             return cList;
         }
     }
