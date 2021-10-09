@@ -26,6 +26,9 @@ namespace SharedLibrary.Dictionary
             {"",  MsgType.Null},
             {"猜数字", MsgType.Game},
             {"成语接龙", MsgType.Game},
+            {"猜歌", MsgType.Game},
+
+
 
             {"翻译", MsgType.Func},
             {"查游戏", MsgType.Func},

@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MiraiNetLibrary\MiraiNetLibrary.csproj" />
+    <ProjectReference Include="..\NeteaseCloudMusicApi\NeteaseCloudMusicApi.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -24,7 +24,7 @@ namespace SharedLibrary.Action.GroupMessage
             //Console.WriteLine(receiver.MessageChain.First());
 
             //receiver.MessageChain.Where(x => x is PlainMessage).Cast<PlainMessage>().ToArray()
-            //等效于eceiver.MessageChain.WhereAndCast<PlainMessage>()
+            //等效于receiver.MessageChain.WhereAndCast<PlainMessage>()
 
             //Image消息
             var imageMsg = receiver.MessageChain.WhereAndCast<ImageMessage>();
@@ -34,9 +34,9 @@ namespace SharedLibrary.Action.GroupMessage
             foreach (var message in plainMsg)
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
-                Console.Write($"[{tcc.Span().TotalMilliseconds.ToString("0.00")}ms][{message.Type}]: ");
-                Console.WriteLine($"{message.Text}");
+                Console.Write($"[{(tcc.Span().TotalMilliseconds*100).ToString("0")}ms][{message.Type}]: ");
                 Console.ResetColor();
+                Console.WriteLine($"{message.Text}");
                 plainMsgParse(mem, group, message, receiver);
                 isParseTrue = true;
             }
@@ -47,9 +47,9 @@ namespace SharedLibrary.Action.GroupMessage
                 {
                     tcc.Over();
                     Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.Write($"{tcc.Span().TotalMilliseconds.ToString("0.00")}ms][{image.Type}]: ");
-                    Console.WriteLine($"{image.Url}");
+                    Console.Write($"{(tcc.Span().TotalMilliseconds * 100).ToString("0")}ms][{image.Type}]: ");
                     Console.ResetColor();
+                    Console.WriteLine($"{image.Url}");
                 }
                 isParseTrue = true;
             }
@@ -66,6 +66,10 @@ namespace SharedLibrary.Action.GroupMessage
             var command = commandSplit(message.Text);
             if (GroupMsg.DGroupMsg.ContainsKey(command[0]))
             {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write($"[CMD][{GroupMsg.DGroupMsg[command[0]]}]: ");
+                Console.ResetColor();
+                Console.WriteLine($"{UtilHelper.ListToString(command)}");
                 if (GroupMsg.DGroupMsg[command[0]] == GroupMsg.MsgType.Game)
                 {
                     GameAction.CommandParse(mem, group, command, receiver);

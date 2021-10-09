@@ -92,6 +92,16 @@ namespace SharedLibrary.Helper
             return istoday;
         }
 
+        public static string ListToString(List<string> str)
+        {
+            var m = "";
+            foreach(var s in str){
+                m += s;
+                m += " ";
+            }
+            return m;
+        }
+
         public static string ConvertFirstUpper(string str)
         {
             var sStr = str.ToLower();
