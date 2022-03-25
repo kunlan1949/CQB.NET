@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace SharedLibrary.Module.Message
 {
-    class SendGroupMessage
+    public class SendGroupMessage
     {
         /// <summary>
         /// 推送指定群[字符串]
@@ -88,6 +88,7 @@ namespace SharedLibrary.Module.Message
             tcc.Start();
             if (atMsgPosition)
             {
+
                 await receiver.SendGroupMessageAsync($"".Append(new AtMessage(receiver.Sender.Id)).Append(msg)).ContinueWith((e) => {
                     tcc.Over();
                     Console.WriteLine("发送耗时" + tcc.Span());

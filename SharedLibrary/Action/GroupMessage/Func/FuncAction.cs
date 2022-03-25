@@ -1,10 +1,12 @@
 ﻿using Db.Bot;
+using HtmlAgilityPack;
 using Mirai.Net.Data.Messages;
 using Mirai.Net.Data.Messages.Concretes;
 using Mirai.Net.Data.Messages.Receivers;
 using Mirai.Net.Utils.Scaffolds;
 using SharedLibrary.Helper;
 using SharedLibrary.Module.Message;
+using SharedLibrary.Parse;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,7 +51,55 @@ namespace SharedLibrary.Action.GroupMessage.Func
         }
         public void Fortune(Members mem, Groups group, List<string> command, GroupMessageReceiver receiver)
         {
+            var d = FortuneHelper.SignDic(command[1]);
+            if (d > 0)
+            {
+                var c = Constellation.Find(Constellation._.Sign == command[1]);
+                if (c != null)
+                {
+                    if (UtilHelper.ISTODAY(c.UpdateTime))
+                    {
+                        Console.WriteLine("存在，数据库获取");
+                        SendGroupMessage.sendAtAsync(receiver, c.LuckResult,true);
+                    }
+                    else
+                    {
+                        Console.WriteLine("过时，网页重新获取");
+                        var m = FortuneHelper.SignDic(command[1]);
 
+                        var result = "";
+                        var web = new HtmlWeb();
+                        var htmlDocument = FortuneParse.MainParseAsync().Result;
+                        var parse = FortuneParse.Parse((FortuneParse.Sign)m);
+                        result = FortuneParse.luckResultAsync(parse, htmlDocument).Result;
+                        SendGroupMessage.sendAtAsync(receiver, result, true);
+                        c.LuckResult = result;
+                        c.UpdateTime = UtilHelper.GetUTCTimeUnix().ToString();
+                        c.Update();
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("不存在，网页获取");
+                    var m = FortuneHelper.SignDic(command[1]);
+
+                    var result = "";
+                    var web = new HtmlWeb();
+                    var htmlDocument = FortuneParse.MainParseAsync().Result;
+                    var parse = FortuneParse.Parse((FortuneParse.Sign)m);
+                    result = FortuneParse.luckResultAsync(parse, htmlDocument).Result;
+                    SendGroupMessage.sendAtAsync(receiver, result, true);
+                    var nc = new Constellation();
+                    nc.Sign = command[1];
+                    nc.LuckResult = result;
+                    nc.UpdateTime = UtilHelper.GetUTCTimeUnix().ToString();
+                    nc.Insert();
+                }
+            }
+            else
+            {
+                SendGroupMessage.sendAsync(receiver, "不存在的星座，请输入正确的星座名！");
+            }
         }
         public void PlaySong(Members mem, Groups group, List<string> command, GroupMessageReceiver receiver)
         {

@@ -12,6 +12,7 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SharedLibrary.Listener;
+using SharedLibrary.Action;
 
 namespace CQB.NET.Action
 {
@@ -39,6 +40,7 @@ namespace CQB.NET.Action
                     MessageListener();
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("消息监听已启动！");
+                    WakeUpAction.SayHello();
                 }
                 else
                 {

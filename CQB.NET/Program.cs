@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using CQB.NET.Action;
+using Db.Bot;
 
 namespace CQB.NET
 {
@@ -18,11 +19,20 @@ namespace CQB.NET
             {
                 if (e.IsCompleted)
                 {
-                    Console.WriteLine("服务启动成功！");
-                    Console.ResetColor();
+                    var m = DatabaseStatus.Find(DatabaseStatus._.Status=="Ok");
+                    if (m!=null)
+                    {
+                        Console.WriteLine("服务启动成功！");
+                        Console.ResetColor();
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;    
+                        Console.WriteLine("服务启动失败，请检查数据库连接！");
+                        Console.ResetColor();
+                    }
                 }
             });
-
             await host.WaitForShutdownAsync();
 
         }
