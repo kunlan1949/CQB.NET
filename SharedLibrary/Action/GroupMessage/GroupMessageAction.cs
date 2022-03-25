@@ -30,26 +30,17 @@ namespace SharedLibrary.Action.GroupMessage
             var imageMsg = receiver.MessageChain.OfType<ImageMessage>();
             //Plain消息
             var plainMsg = receiver.MessageChain.OfType<PlainMessage>();
-
-            foreach (var message in plainMsg)
-            {
-                Console.ForegroundColor = ConsoleColor.Blue;
-                Console.Write($"[{tcc.Span().TotalMilliseconds*100:0}ms][{message.Type}]: ");
-                Console.ResetColor();
-                Console.WriteLine($"{message.Text}");
-                PlainMsgParse(mem, group, message, receiver);
-                isParseTrue = true;
-            }
-
-            if (imageMsg != null && !plainMsg.Any())
+            var imageUrl ="";
+            if (imageMsg != null && plainMsg.Any())
             {
                 foreach (var image in imageMsg)
                 {
                     tcc.Over();
                     Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.Write($"{tcc.Span().TotalMilliseconds * 100:0}ms][{image.Type}]: ");
+                    Console.Write($"[{tcc.Span().TotalMilliseconds * 100:0.00}ms][{image.Type}]: ");
                     Console.ResetColor();
                     Console.WriteLine($"{image.Url}");
+                    imageUrl = image.Url;
                 }
                 isParseTrue = true;
             }
@@ -58,12 +49,29 @@ namespace SharedLibrary.Action.GroupMessage
                 return false;
             }
 
+
+            foreach (var message in plainMsg)
+            {
+                var messageText = message.Text.Replace("\t", "").Replace("\r", "").Replace("\n", "");
+                if(imageMsg != null)
+                {
+                    messageText+=" "+imageUrl;
+                }
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.Write($"[{tcc.Span().TotalMilliseconds*100:0.00}ms][{message.Type}]: ");
+                Console.ResetColor();
+                Console.WriteLine($"{messageText}");
+                PlainMsgParse(mem, group, message.Text, receiver);
+                isParseTrue = true;
+            }
+
+        
             return isParseTrue;
         }
 
-        private static void PlainMsgParse(Members mem, Groups group, PlainMessage message, GroupMessageReceiver receiver)
+        private static void PlainMsgParse(Members mem, Groups group, string message, GroupMessageReceiver receiver)
         {
-            var command = CommandSplit(message.Text);
+            var command = CommandSplit(message);
             if (GroupMsg.DGroupMsg.ContainsKey(command[0]))
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
