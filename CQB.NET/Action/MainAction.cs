@@ -62,7 +62,7 @@ namespace CQB.NET.Action
             
             ///好友消息订阅
             bot.MessageReceived
-               .WhereAndCast<FriendMessageReceiver>()
+               .OfType<FriendMessageReceiver>()
                .Subscribe(x =>
                {
                    friendMsg.Execute(x, x.MessageChain.First());
@@ -70,7 +70,7 @@ namespace CQB.NET.Action
 
             ///群聊消息订阅
             bot.MessageReceived
-                .WhereAndCast<GroupMessageReceiver>()
+                .OfType<GroupMessageReceiver>()
                 .Subscribe(x =>
                 {
                     groupMsg.Execute(x, x.MessageChain.First());
@@ -81,21 +81,21 @@ namespace CQB.NET.Action
         /// 事件处理
         /// </summary>
         /// <returns></returns>
-        private static void BehaviorListener()
-        {
-            ///加好友请求
-            bot.EventReceived.Where(x => x.Type == Events.NewFriendRequested)
-            .Cast<NewFriendRequestedEvent>().Subscribe(x =>
-            {
+        //private static void BehaviorListener()
+        //{
+        //    ///加好友请求
+        //    bot.EventReceived.Where(x => x.Type == Events.NewFriendRequested)
+        //    .Cast<NewFriendRequestedEvent>().Subscribe(x =>
+        //    {
 
-            });
+        //    });
 
-            ///被邀请入群申请
-            bot.EventReceived.Where(x => x.Type == Events.NewInvitationRequested)
-            .Cast<NewInvitationRequestedEvent>().Subscribe(x =>
-            {
+        //    ///被邀请入群申请
+        //    bot.EventReceived.Where(x => x.Type == Events.NewInvitationRequested)
+        //    .Cast<NewInvitationRequestedEvent>().Subscribe(x =>
+        //    {
 
-            });
-        }
+        //    });
+        //}
     }
 }

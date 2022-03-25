@@ -5,6 +5,7 @@ using Mirai.Net.Data.Messages.Concretes;
 using Mirai.Net.Data.Messages.Receivers;
 using Mirai.Net.Utils.Scaffolds;
 using SharedLibrary.Helper;
+using SharedLibrary.Model.FuncModel;
 using SharedLibrary.Module.Message;
 using SharedLibrary.Parse;
 using System;
@@ -31,25 +32,80 @@ namespace SharedLibrary.Action.GroupMessage.Func
         {
             {"翻译", "Trans"},
             {"查游戏", "SGame"},
+            {"免费游戏", "SFreeGame"},
             {"运势", "Fortune"},
             {"点歌", "PlaySong"},
             {"天气", "Weather"}, 
             {"笑话", "Joke"},
-            {"抽签", "Sortilege"}
+            {"抽签", "Sortilege"},
+            {"识图", "SearchImage"}
         };
     }
 
     class Func
     {
-        public void Trans(Members mem, Groups group, List<string> command, GroupMessageReceiver receiver)
+        public async Task Trans(Members mem, Groups group, List<string> command, GroupMessageReceiver receiver)
         {
 
         }
-        public void SGame(Members mem, Groups group, List<string> command, GroupMessageReceiver receiver)
+        public async Task SGame(Members mem, Groups group, List<string> command, GroupMessageReceiver receiver)
+        {
+            if (command[1] != null && command[1] != "")
+            {
+                await SendGroupMessage.sendAsync(receiver, "查询需要10S左右，请稍等");
+                var value = new SteamInfoModel();
+                await SteamSearchHelper.GetValueAsync(command[1]).ContinueWith(async (e) => {
+                    value = e.Result;
+                    if(value != null)
+                    {
+                        MessageBase[] commonMsg = { };
+
+                        MessageBase[] priceMsg = { };
+
+                        if (!value.GamePrice.Contains("-1"))
+                        {
+                            priceMsg = "".Append(
+                            $"游戏价格：{value.GamePrice}\n");
+                        }
+                        else
+                        {
+                            priceMsg = $"【该游戏{value.GameDcPercent}折扣中!】\n".Append(
+                            $"游戏原价：{value.GameBdcPrice}\n" +
+                            $"游戏现价：{value.GameDcPrice}\n");
+                        }
+
+
+                        commonMsg = "".Append(new ImageMessage() { Url = value.GameImgUrl, Type = Messages.Image })
+                        .Append(
+                            $"游戏ID：{value.GameId}\n" +
+                            $"游戏名：{value.GameName}\n" +
+                            $"链接：：{value.GameUrl}\n" +
+                            $"在线人数：{value.GameOnline}\n" +
+                            $"评价等级：[{value.GameEvaStatus}]\n" +
+                            $"评价人数：[{value.GameEvaCount}]\n" +
+                            $"游戏简介：{value.GameDesc}\n").Append(priceMsg);
+
+
+                       await SendGroupMessage.sendAtAsync(receiver, commonMsg, true);
+                    }
+                    else
+                    {
+                        await SendGroupMessage.sendAtAsync(receiver, "查询失败！", true);
+                    }
+                  
+                });
+
+            }
+            else
+            {
+
+            }
+        }
+        public async Task SFreeGame(Members mem, Groups group, List<string> command, GroupMessageReceiver receiver)
         {
 
         }
-        public void Fortune(Members mem, Groups group, List<string> command, GroupMessageReceiver receiver)
+        public async Task Fortune(Members mem, Groups group, List<string> command, GroupMessageReceiver receiver)
         {
             var d = FortuneHelper.SignDic(command[1]);
             if (d > 0)
@@ -60,7 +116,7 @@ namespace SharedLibrary.Action.GroupMessage.Func
                     if (UtilHelper.ISTODAY(c.UpdateTime))
                     {
                         Console.WriteLine("存在，数据库获取");
-                        SendGroupMessage.sendAtAsync(receiver, c.LuckResult,true);
+                        await SendGroupMessage.sendAtAsync(receiver, c.LuckResult,true);
                     }
                     else
                     {
@@ -72,7 +128,7 @@ namespace SharedLibrary.Action.GroupMessage.Func
                         var htmlDocument = FortuneParse.MainParseAsync().Result;
                         var parse = FortuneParse.Parse((FortuneParse.Sign)m);
                         result = FortuneParse.luckResultAsync(parse, htmlDocument).Result;
-                        SendGroupMessage.sendAtAsync(receiver, result, true);
+                        await SendGroupMessage.sendAtAsync(receiver, result, true);
                         c.LuckResult = result;
                         c.UpdateTime = UtilHelper.GetUTCTimeUnix().ToString();
                         c.Update();
@@ -88,7 +144,7 @@ namespace SharedLibrary.Action.GroupMessage.Func
                     var htmlDocument = FortuneParse.MainParseAsync().Result;
                     var parse = FortuneParse.Parse((FortuneParse.Sign)m);
                     result = FortuneParse.luckResultAsync(parse, htmlDocument).Result;
-                    SendGroupMessage.sendAtAsync(receiver, result, true);
+                    await SendGroupMessage.sendAtAsync(receiver, result, true);
                     var nc = new Constellation();
                     nc.Sign = command[1];
                     nc.LuckResult = result;
@@ -98,28 +154,34 @@ namespace SharedLibrary.Action.GroupMessage.Func
             }
             else
             {
-                SendGroupMessage.sendAsync(receiver, "不存在的星座，请输入正确的星座名！");
+                await SendGroupMessage.sendAsync(receiver, "不存在的星座，请输入正确的星座名！");
             }
         }
-        public void PlaySong(Members mem, Groups group, List<string> command, GroupMessageReceiver receiver)
+        public async Task PlaySong(Members mem, Groups group, List<string> command, GroupMessageReceiver receiver)
         {
 
         }
-        public void Weather(Members mem, Groups group, List<string> command, GroupMessageReceiver receiver)
+        public async Task Weather(Members mem, Groups group, List<string> command, GroupMessageReceiver receiver)
         {
             MessageBase[] msg;
             msg = "".Append(new ImageMessage() {Base64=ImageHelper.makePic(),Type=Messages.Image});
-            SendGroupMessage.sendAsync(receiver, msg);
+            await SendGroupMessage.sendAsync(receiver, msg);
         }
-        public void Joke(Members mem, Groups group, List<string> command, GroupMessageReceiver receiver)
+        public async Task Joke(Members mem, Groups group, List<string> command, GroupMessageReceiver receiver)
         {
             string msg = "<?xml version='1.0' encoding='UTF-8' standalone='yes' ?><msg serviceID=\"146\" templateID=\"1\" action=\"web\" brief=\"[分享] 精神小伙说精神丨学习雷 锋好榜样\" sourceMsgId=\"0\" url=\"https://xw.qq.com/cmsid/20210928A08CR900?f=newdc\" flag=\"0\" adverSign=\"0\" multiMsgFlag=\"0\"><item layout=\"2\" advertiser_id=\"0\" aid=\"0\"><picture cover=\"https://mat1.gtimg.com/www/mobi/image/logo/tencent_logo.png\" w=\"0\" h=\"0\" /><title>精神小伙说精神丨学习雷锋好榜样</title><summary>精神小伙说精神丨学习雷锋好榜样,△精神小伙说精神丨学 习雷锋好榜样“学习雷锋好榜样，忠于革命忠于党，爱憎分明不忘本，立场坚…</summary></item><source name=\"QQ浏览器\" icon=\"https://url.cn/PWkhNu\" action=\" \" appid=\"-1\" /></msg>";
-            SendGroupMessage.sendXmlAsync(receiver, msg);
+            await SendGroupMessage.sendXmlAsync(receiver, msg);
         }
-        public void Sortilege(Members mem, Groups group, List<string> command, GroupMessageReceiver receiver)
+        public async Task Sortilege(Members mem, Groups group, List<string> command, GroupMessageReceiver receiver)
         {
             string msg = XmlHelper.msgXml("牛啊","牛啊牛啊","nnnnn");
-             SendGroupMessage.sendXmlAsync(receiver, msg);
+            await SendGroupMessage.sendXmlAsync(receiver, msg);
         }
+        public async Task SearchImage(Members mem, Groups group, List<string> command, GroupMessageReceiver receiver)
+        {
+            
+            //await SendGroupMessage.sendXmlAsync(receiver, msg);
+        }
+        
     }
 }
