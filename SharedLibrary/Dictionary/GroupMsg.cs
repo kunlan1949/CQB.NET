@@ -38,6 +38,7 @@ namespace SharedLibrary.Dictionary
             {"笑话", MsgType.Func},
             {"抽签", MsgType.Func},
             {"识图", MsgType.Func},
+            {"疫情", MsgType.Func},
 
             {"解签", MsgType.Ctrl},
         };

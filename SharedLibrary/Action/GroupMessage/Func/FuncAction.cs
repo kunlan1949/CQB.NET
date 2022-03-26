@@ -38,7 +38,8 @@ namespace SharedLibrary.Action.GroupMessage.Func
             {"天气", "Weather"}, 
             {"笑话", "Joke"},
             {"抽签", "Sortilege"},
-            {"识图", "SearchImage"}
+            {"识图", "SearchImage"},
+            {"疫情", "Covid19News"}
         };
     }
 
@@ -195,6 +196,10 @@ namespace SharedLibrary.Action.GroupMessage.Func
                 await SendGroupMessage.sendAtAsync(receiver, "请发送您想要查找的图片!",true);
             }
             //await SendGroupMessage.sendXmlAsync(receiver, msg);
+        }
+        public async Task Covid19News(Members mem, Groups group, List<string> command, GroupMessageReceiver receiver)
+        {
+            await Covid19NewsHelper.GetLastNewsAsync(mem,group,command,receiver);
         }
         
     }
