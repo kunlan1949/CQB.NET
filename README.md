@@ -1,7 +1,7 @@
 <h1 align="center">Welcome to CQB.NET  👋</h1>
 
 
-<p align="center"><a><span>CQB.NET是一个编写于.NET5的QBot。通过提供其所包含的丰富功能来增强Q群聊天的娱乐性<span/><a></p>
+<p align="center"><a><span>CQB.NET是一个编写于.NET6的QBot。通过提供其所包含的丰富功能来增强Q群聊天的娱乐性<span/><a></p>
 
 <p align="center">
   <a href="https://github.com/kunlan1949/CQB.NET/blob/master/MIT-license.md">
