@@ -52,7 +52,7 @@ namespace SharedLibrary.Action.GroupMessage
 
             foreach (var message in plainMsg)
             {
-                var messageText = message.Text.Replace("\t", "").Replace("\r", "").Replace("\n", "");
+                var messageText =RegHelper.GetStrFields(message.Text.Replace("\t", "").Replace("\r", "").Replace("\n", ""));
                 if(imageMsg != null)
                 {
                     messageText+=" "+imageUrl;
@@ -61,7 +61,7 @@ namespace SharedLibrary.Action.GroupMessage
                 Console.Write($"[{tcc.Span().TotalMilliseconds*100:0.00}ms][{message.Type}]: ");
                 Console.ResetColor();
                 Console.WriteLine($"{messageText}");
-                PlainMsgParse(mem, group, message.Text, receiver);
+                PlainMsgParse(mem, group, messageText, receiver);
                 isParseTrue = true;
             }
 

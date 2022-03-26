@@ -37,6 +37,7 @@ namespace SharedLibrary.Dictionary
             {"天气", MsgType.Func},
             {"笑话", MsgType.Func},
             {"抽签", MsgType.Func},
+            {"识图", MsgType.Func},
 
             {"解签", MsgType.Ctrl},
         };

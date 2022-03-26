@@ -136,8 +136,13 @@ namespace SharedLibrary.Helper
             string pattern = @"^[a-zA-Z]+://(\w+(-\w+)*)(\.(\w+(-\w+)*))*(\?\S*)?$";
             return IsMatch(pattern, input);
         }
+        public static bool ISURLS(string input)
+        {
+            string pattern = @"^http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?$";
+            return IsMatch(pattern, input);
+        }
 
-
+        
         /// <summary>
         /// 判断输入的字符串是否是表示一个IP地址
         /// </summary>
@@ -271,6 +276,20 @@ namespace SharedLibrary.Helper
 
 
         #endregion
+        /// <summary>
+        /// 合并所有的多余空格只保留一个
+        /// </summary>
+        /// <param name="strWords">待处理字符串</param>
+        /// <returns></returns>
+        public static string GetStrFields(string strWords)
+        {
+
+            Regex replaceSpace = new Regex(@"\s{1,}", RegexOptions.IgnoreCase);
+
+            return replaceSpace.Replace(strWords, " ").Trim();
+
+        }
+ 
     
     }
 }

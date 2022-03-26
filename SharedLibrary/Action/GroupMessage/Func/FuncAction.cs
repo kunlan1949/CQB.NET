@@ -179,7 +179,21 @@ namespace SharedLibrary.Action.GroupMessage.Func
         }
         public async Task SearchImage(Members mem, Groups group, List<string> command, GroupMessageReceiver receiver)
         {
-            
+            var urlStatus = 0;
+            if (command.Count <= 2)
+            {
+                command.Insert(1, "普通");
+            }
+
+            urlStatus = await NetWorkDetectionHelper.GetUrlStatusAsync(command[2]);
+            if (urlStatus == 0)
+            {
+                await SearchImageHelper.SearchImageWithTextAsync(mem,receiver,command);
+            }
+            else
+            {
+                await SendGroupMessage.sendAtAsync(receiver, "请发送您想要查找的图片!",true);
+            }
             //await SendGroupMessage.sendXmlAsync(receiver, msg);
         }
         
