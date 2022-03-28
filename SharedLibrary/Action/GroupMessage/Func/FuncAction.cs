@@ -39,7 +39,8 @@ namespace SharedLibrary.Action.GroupMessage.Func
             {"笑话", "Joke"},
             {"抽签", "Sortilege"},
             {"识图", "SearchImage"},
-            {"疫情", "Covid19News"}
+            {"疫情", "Covid19News"},
+            {"母猪", "PCRRank"}
         };
     }
 
@@ -201,6 +202,11 @@ namespace SharedLibrary.Action.GroupMessage.Func
         {
             await Covid19NewsHelper.GetLastNewsAsync(mem,group,command,receiver);
         }
-        
+
+        public async Task PCRRank(Members mem, Groups group, List<string> command, GroupMessageReceiver receiver)
+        {
+            await PCRRankHelper.GetNewsAsync();
+        }
+
     }
 }

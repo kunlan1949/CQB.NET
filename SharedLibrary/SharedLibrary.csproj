@@ -5,6 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Res\PCR\rank_1.png" />
+    <None Remove="Res\PCR\rank_2.png" />
+    <None Remove="Res\PCR\rank_3.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Res\PCR\rank_1.png" />
+    <EmbeddedResource Include="Res\PCR\rank_2.png" />
+    <EmbeddedResource Include="Res\PCR\rank_3.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AngleSharp" Version="0.16.0" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.42" />
     <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="8.3.2" />
