@@ -6,6 +6,7 @@ using SharedLibrary.Action.GroupMessage.Func;
 using SharedLibrary.Action.GroupMessage.Game;
 using SharedLibrary.Dictionary;
 using SharedLibrary.Helper;
+using SharedLibrary.Module.Message;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace SharedLibrary.Action.GroupMessage
 {
     public class GroupMessageAction
     {
-        public static bool GroupCommandParse(Members mem, Groups group, GroupMessageReceiver receiver)
+        public static async Task<bool> GroupCommandParseAsync(Members mem, Groups group, GroupMessageReceiver receiver)
         {
             TimeCounterHelper tcc = new();
             tcc.Start();
@@ -30,6 +31,20 @@ namespace SharedLibrary.Action.GroupMessage
             var imageMsg = receiver.MessageChain.OfType<ImageMessage>();
             //Plain消息
             var plainMsg = receiver.MessageChain.OfType<PlainMessage>();
+            //At消息
+            var AtMsg = receiver.MessageChain.OfType<AtMessage>();
+            if (AtMsg != null)
+            {
+                var cm = ConfigHelper.GetInfo();
+                foreach (var atMessage in AtMsg)
+                {
+                    if (atMessage.Target== cm.Number)
+                    {
+                        await SendGroupMessage.sendAsync(receiver, "干嘛?");
+                    }
+                }
+            }
+
             var imageUrl ="";
             if (imageMsg != null && plainMsg.Any())
             {

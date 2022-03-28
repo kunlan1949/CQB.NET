@@ -1,7 +1,9 @@
 ﻿using Db.Bot;
 using Mirai.Net.Data.Messages.Receivers;
+using Mirai.Net.Utils.Scaffolds;
 using Newtonsoft.Json.Linq;
 using RestSharp;
+using SharedLibrary.Model.FuncModel;
 using SharedLibrary.Module.Message;
 using System;
 using System.Collections.Generic;
@@ -21,7 +23,17 @@ namespace SharedLibrary.Helper
                 if(citys != null)
                 {
                     Console.WriteLine(citys.CityName);
-                    await CityNewsUpdateAsync(citys.CityName);
+                    var news = await CityNewsUpdateAsync(citys.CityName);
+                    var message = "".Append($"【{citys.CityName}*疫情】\n")
+                        .Append($"现有确诊：{news.presentNumber}例\n")
+                        .Append($"本日新增：{news.sureNewNumber}例\n")
+                        .Append($"无症状病例：{news.sureNewHidNumber}例\n")
+                        .Append($"高风险地区数：{news.highRankNumber}处\n")
+                        .Append($"中风险地区数：{news.midRankNumber}处\n")
+                        .Append($"累计治愈：{news.cureNumber}例\n")
+                        .Append($"累计确诊：{news.definiteNumber}例\n")
+                        .Append($"[{news.newsTime}]\n");
+                    await SendGroupMessage.sendAtAsync(receiver, message, false);
                 }
                 else
                 {
@@ -30,7 +42,7 @@ namespace SharedLibrary.Helper
             }
         }
 
-        private static async Task CityNewsUpdateAsync(string cityName)
+        private static async Task<Covid19NewsModel> CityNewsUpdateAsync(string cityName)
         {
             var client = new RestClient($"https://m.sm.cn");
 
@@ -50,6 +62,8 @@ namespace SharedLibrary.Helper
                 data = "provinceData";
             }
             JObject dataObj = responseObj[$"{data}"].Value<JObject>();
+            //数据统计时间
+            string newsTime = responseObj["time"].Value<string>();
             //当前确诊人数
             string present = dataObj["present"].Value<string>();
             //累计确诊人数
@@ -67,9 +81,21 @@ namespace SharedLibrary.Helper
             //中风险区数量
             string midRankArea = danager["1"].Value<string>();
             //高风险区数量
-            string highRankArea = dataObj["2"].Value<string>();
+            string highRankArea = danager["2"].Value<string>();
 
-
+            var model = new Covid19NewsModel()
+            {
+                presentNumber = present,
+                definiteNumber = sureCnt,
+                dieNumber = dieCnt,
+                cureNumber = cureCnt,
+                sureNewNumber = sureNewCnt, 
+                sureNewHidNumber = sureNewHid,
+                midRankNumber = midRankArea,
+                highRankNumber = highRankArea,
+                newsTime = newsTime
+            };
+            return model;
         }
     }
 }

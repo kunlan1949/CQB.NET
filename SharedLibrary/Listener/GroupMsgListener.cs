@@ -21,8 +21,8 @@ namespace SharedLibrary.Listener
                 {
                     if(m != null)
                     {
-                        var p = GroupMessageAction.GroupCommandParse(m, g, receiver);
-                        if (!p)
+                        var p = GroupMessageAction.GroupCommandParseAsync(m, g, receiver);
+                        if (!p.Result)
                         {
                             //不符合指令
                         }
