@@ -48,7 +48,20 @@ namespace SharedLibrary.Action.GroupMessage.Func
     {
         public async Task Trans(Members mem, Groups group, List<string> command, GroupMessageReceiver receiver)
         {
+            if (command[1] != null && command[1] != "")
+            {
+                string result = TranslateHelper.GetTranslate(command[1]);
+                MessageBase[] msg = { };
+                msg = ""
+                    .Append("\n【翻译来源：有道翻译】\n")
+                    .Append($"[翻译原文]：{command[1]}\n[翻译结果]：{result}\n");
+                await SendGroupMessage.sendAtAsync(receiver, msg, true);
 
+            }
+            else
+            {
+                await SendGroupMessage.sendAsync(receiver, "输入的指令错误！请检查后重试");
+            }
         }
         public async Task SGame(Members mem, Groups group, List<string> command, GroupMessageReceiver receiver)
         {
@@ -165,9 +178,20 @@ namespace SharedLibrary.Action.GroupMessage.Func
         }
         public async Task Weather(Members mem, Groups group, List<string> command, GroupMessageReceiver receiver)
         {
-            MessageBase[] msg;
-            msg = "".Append(new ImageMessage() {Base64=ImageHelper.makePic(),Type=Messages.Image});
-            await SendGroupMessage.sendAsync(receiver, msg);
+            if (command[1] != null && command[1] != "")
+            {
+                var city = Citys.Find(Citys._.CityName == command[1]);
+                if (city != null)
+                {
+                    var result = WeatherHelper.GetWeatherResult(city.CityCode).Result;
+                    await SendGroupMessage.sendAtAsync(receiver, $"更新时间[{result.CurrentTime}]\n {city.CityName} 今天{result.Weather}\n当前气温 {result.CurrentTemp}℃\n体感温度 {result.RealFeelst}℃ \n空气质量为：【{WeatherHelper.AirQuality(result.AirQuality)}】{result.AirQuality}\n{result.Wind.WindDirect} ：{result.Wind.WindSpeed}", false);
+                }
+                else
+                {
+                    await SendGroupMessage.sendAtAsync(receiver, "未找到相关城市信息!", true);
+                }
+
+            }
         }
         public async Task Joke(Members mem, Groups group, List<string> command, GroupMessageReceiver receiver)
         {
